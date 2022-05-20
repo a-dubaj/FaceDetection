@@ -22,9 +22,13 @@ The purpose of this application was to create a simple project based on `React.j
 ### Important custom files
 
 `public/models` 
+
 `src/components/Navbar.jsx`
+
 `src/components/NewPost.jsx`
+
 `src/App.jsx`
+
 `src/App.css`
 
 ----
