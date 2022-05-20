@@ -1,7 +1,7 @@
-.app{
-  display: flex;
+.app {
+    display: flex;
 }
 
 canvas {
-
+    position: absolute;
 }
