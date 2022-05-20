@@ -2,8 +2,12 @@
 ----
 [![CI build](https://github.com/a-dubaj/FaceDetection/actions/workflows/node.js.yml/badge.svg?branch=master)](https://github.com/a-dubaj/FaceDetection/actions/workflows/node.js.yml)
 
-The purpose of this application was to create a simple project based on `React.js` and `face-api.js`. This application allow to face recognition
+The purpose of this application was to create a simple project based on `React.js` and `face-api.js`. This application allow to face recognition and tag people on photos.
 
+### Use Case
+- User can upload image file
+- User can tag people on image files
+- User can tag faces on image files
 
 ### Tech stack
 - React.js
@@ -14,5 +18,12 @@ The purpose of this application was to create a simple project based on `React.j
 - `npm install` for required dependencies
 - `npm start` for run application
 
+
+### Important custom files
+`public/models` - 
+`src/components/Navbar.jsx` - Navbar component
+`src/components/NewPost.jsx` - New post image component
+`src/App.jsx` - Main application file
+`src/App.css` - Main CSS file
 ----
 ![image](./assets/app_screen.png)
