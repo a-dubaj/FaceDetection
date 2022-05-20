@@ -21,15 +21,15 @@ The purpose of this application was to create a simple project based on `React.j
 
 ### Important custom files
 
-`public/models` 
+`public/models` - model files
 
-`src/components/Navbar.jsx`
+`src/components/Navbar.jsx` - Navbar component
 
-`src/components/NewPost.jsx`
+`src/components/NewPost.jsx` - New post component
 
-`src/App.jsx`
+`src/App.jsx` - Main application file
 
-`src/App.css`
+`src/App.css` - Styles file
 
 ----
 ![image](./assets/app_screen.png)
