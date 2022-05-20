@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import * as faceapi from "face-api.js";
 
-const NewPost = ({ image }) => {
-    const { url, width, height } = image;
+const NewPost = ({image}) => {
+    const {url, width, height} = image;
     const [faces, setFaces] = useState([]);
     const [friends, setFriends] = useState([]);
 
@@ -39,14 +39,14 @@ const NewPost = ({ image }) => {
     }, []);
 
     const addFriend = (e) => {
-        setFriends((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+        setFriends((prev) => ({...prev, [e.target.name]: e.target.value}));
     };
 
     console.log(friends);
     return (
         <div className="container">
-            <div className="left" style={{ width, height }}>
-                <img ref={imgRef} crossOrigin="anonymous" src={url} alt="" />
+            <div className="left" style={{width, height}}>
+                <img ref={imgRef} crossOrigin="anonymous" src={url} alt=""/>
                 <canvas
                     onMouseEnter={enter}
                     ref={canvasRef}
@@ -56,7 +56,7 @@ const NewPost = ({ image }) => {
                 {faces.map((face, i) => (
                     <input
                         name={`input${i}`}
-                        style={{ left: face[0], top: face[1] + face[3] + 5 }}
+                        style={{left: face[0], top: face[1] + face[3] + 5}}
                         placeholder="Tag a friend"
                         key={i}
                         className="friendInput"
