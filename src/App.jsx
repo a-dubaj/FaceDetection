@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect, useRef } from "react";
+import {useEffect, useRef} from "react";
 import * as faceapi from 'face-api.js';
 
 
