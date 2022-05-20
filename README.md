@@ -20,6 +20,7 @@ The purpose of this application was to create a simple project based on `React.j
 
 
 ### Important custom files
+
 `public/models` - 
 `src/components/Navbar.jsx` - Navbar component
 `src/components/NewPost.jsx` - New post image component
