@@ -5,8 +5,8 @@
 The purpose of this application was to create a simple project based on `React.js` and `face-api.js`. This application allow to face recognition and tag people on photos.
 
 ### Use Case
-- User can upload image file
-- User can tag people on image files
+- User can upload an image file
+- User can tag people in image files
 - User can tag faces on image files
 
 ### Tech stack
@@ -16,7 +16,7 @@ The purpose of this application was to create a simple project based on `React.j
 
 ### Installation
 - `npm install` for required dependencies
-- `npm start` for run application
+- `npm start` to run the application
 
 
 ### Important custom files
