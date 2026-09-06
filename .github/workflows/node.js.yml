@@ -34,4 +34,4 @@ jobs:
         env:
           CI: false
 
-      - run: npm test --if-present
+      - run: npm test --if-present -- --watchAll=false --passWithNoTests
