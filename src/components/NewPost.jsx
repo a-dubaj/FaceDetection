@@ -1,58 +1,85 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import * as faceapi from 'face-api.js';
-import NewPost from '../components/NewPost';
+import {useEffect, useRef, useState} from "react";
+import * as faceapi from "face-api.js";
 
-jest.mock('face-api.js', () => ({
-  __esModule: true,
-  nets: {
-    tinyFaceDetector: { loadFromUri: jest.fn() },
-    faceLandmark68Net: { loadFromUri: jest.fn() },
-    faceExpressionNet: { loadFromUri: jest.fn() },
-  },
-  detectAllFaces: jest.fn(),
-  TinyFaceDetectorOptions: jest.fn(),
-}));
+const NewPost = ({image}) => {
+    const {url, width, height} = image;
+    const [faces, setFaces] = useState([]);
+    const [friends, setFriends] = useState([]);
 
-const mockImage = { url: 'https://example.com/photo.jpg', width: 400, height: 300 };
-const mockDetections = [{ box: { x: 10, y: 20, width: 50, height: 60 } }];
+    const imgRef = useRef();
+    const canvasRef = useRef();
 
-beforeEach(() => {
-  faceapi.nets.tinyFaceDetector.loadFromUri.mockResolvedValue();
-  faceapi.nets.faceLandmark68Net.loadFromUri.mockResolvedValue();
-  faceapi.nets.faceExpressionNet.loadFromUri.mockResolvedValue();
-  faceapi.detectAllFaces.mockResolvedValue(mockDetections);
-});
+    const handleImage = async () => {
+        const detections = await faceapi.detectAllFaces(
+            imgRef.current,
+            new faceapi.TinyFaceDetectorOptions()
+        );
+        setFaces(detections.map((d) => Object.values(d.box)));
+    };
 
-describe('NewPost', () => {
-  test('renders without crashing and shows a "Tag a friend" input per detected face', async () => {
-    render(<NewPost image={mockImage} />);
-    await waitFor(() => {
-      expect(screen.getAllByPlaceholderText('Tag a friend')).toHaveLength(1);
-    });
-  });
+    const enter = () => {
+        const ctx = canvasRef.current.getContext("2d");
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "yellow";
+        faces.map((face) => ctx.strokeRect(...face));
+    };
 
-  test('renders the image with the correct src', () => {
-    render(<NewPost image={mockImage} />);
-    const img = screen.getByRole('img');
-    expect(img).toHaveAttribute('src', mockImage.url);
-  });
+    useEffect(() => {
+        const loadModels = () => {
+            Promise.all([
+                faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+                faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+                faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+            ])
+                .then(handleImage)
+                .catch((e) => console.log(e));
+        };
 
-  test('renders "Share your post" heading', () => {
-    render(<NewPost image={mockImage} />);
-    expect(screen.getByText('Share your post')).toBeInTheDocument();
-  });
+        imgRef.current && loadModels();
+    }, []);
 
-  test('renders the Send button', () => {
-    render(<NewPost image={mockImage} />);
-    expect(screen.getByRole('button', { name: 'Send' })).toBeInTheDocument();
-  });
+    const addFriend = (e) => {
+        setFriends((prev) => ({...prev, [e.target.name]: e.target.value}));
+    };
 
-  test('typing a friend name updates the "with" list', async () => {
-    render(<NewPost image={mockImage} />);
+    console.log(friends);
+    return (
+        <div className="container">
+            <div className="left" style={{width, height}}>
+                <img ref={imgRef} crossOrigin="anonymous" src={url} alt=""/>
+                <canvas
+                    onMouseEnter={enter}
+                    ref={canvasRef}
+                    width={width}
+                    height={height}
+                />
+                {faces.map((face, i) => (
+                    <input
+                        name={`input${i}`}
+                        style={{left: face[0], top: face[1] + face[3] + 5}}
+                        placeholder="Tag a friend"
+                        key={i}
+                        className="friendInput"
+                        onChange={addFriend}
+                    />
+                ))}
+            </div>
+            <div className="right">
+                <h1>Share your post</h1>
+                <input
+                    type="text"
+                    placeholder="What's on your mind?"
+                    className="rightInput"
+                />
+                {friends && (
+                    <span className="friends">
+            with <span className="name">{Object.values(friends) + " "}</span>
+          </span>
+                )}
+                <button className="rightButton">Send</button>
+            </div>
+        </div>
+    );
+};
 
-    const input = await screen.findByPlaceholderText('Tag a friend');
-    fireEvent.change(input, { target: { name: 'input0', value: 'Kasia' } });
-
-    expect(await screen.findByText(/Kasia/)).toBeInTheDocument();
-  });
-});
+export default NewPost;
